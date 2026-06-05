@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 import PokemonCard from './PokemonCard';
+import { styles } from './PokemonGrid.styles';
 
 export default function PokemonGrid({ pokemons, onPokemonPress }) {
   const renderItem = ({ item }) => (
@@ -20,12 +21,3 @@ export default function PokemonGrid({ pokemons, onPokemonPress }) {
     />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-  },
-  row: {
-    justifyContent: 'space-between',
-  },
-});

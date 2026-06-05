@@ -14,13 +14,13 @@ export async function fetchMoveDetail(moveName) {
     data.names?.find((n) => n.language.name === 'en')?.name ||
     data.name;
 
-  // Descrição em pt-BR ou en
+  // Descricao em pt-BR ou en
   const description =
     data.flavor_text_entries?.find((e) => e.language.name === 'pt-BR')?.flavor_text ||
     data.flavor_text_entries?.find((e) => e.language.name === 'en')?.flavor_text ||
     '';
 
-  // Efeito secundário
+  // Efeito secundario
   const effectEntry =
     data.effect_entries?.find((e) => e.language.name === 'pt-BR') ||
     data.effect_entries?.find((e) => e.language.name === 'en');
@@ -28,14 +28,14 @@ export async function fetchMoveDetail(moveName) {
   const secondaryEffect =
     data.effect_changes?.[0]?.effect_entries?.find((e) => e.language.name === 'en')?.effect || null;
 
-  // Pokémons que aprendem o movimento (primeiros 20)
+  // Pokemons que aprendem o movimento (primeiros 20)
   const learnedBy = (data.learned_by_pokemon || []).slice(0, 20).map((p) => {
     const parts = p.url.split('/').filter(Boolean);
     const id = parseInt(parts[parts.length - 1], 10);
     return { name: p.name, id };
   });
 
-  // Geração
+  // Geracao
   const generation = data.generation?.name
     ?.replace('generation-', 'Geração ')
     ?.toUpperCase()

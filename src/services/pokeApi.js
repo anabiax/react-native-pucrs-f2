@@ -1,9 +1,9 @@
 const BASE_URL = 'https://pokeapi.co/api/v2';
 
 /**
- * Busca a lista de pokémons com paginação
- * @param {number} limit - Quantidade de pokémons por página
- * @param {number} offset - Deslocamento para paginação
+ * Busca a lista de pokemons com paginação
+ * @param {number} limit - Quantidade de pokemons por pagina
+ * @param {number} offset - Deslocamento para paginacao
  * @returns {Promise<{results: Array, count: number, next: string|null, previous: string|null}>}
  */
 export async function fetchPokemonList(limit = 20, offset = 0) {
@@ -15,9 +15,9 @@ export async function fetchPokemonList(limit = 20, offset = 0) {
 }
 
 /**
- * Busca os detalhes de um pokémon pelo nome ou id
+ * Busca os detalhes de um pokemon pelo nome ou id
  * @param {string|number} nameOrId
- * @returns {Promise<Object>} detalhes do pokémon
+ * @returns {Promise<Object>} detalhes do pokemon
  */
 export async function fetchPokemonDetail(nameOrId) {
   const response = await fetch(`${BASE_URL}/pokemon/${nameOrId}`);
@@ -26,7 +26,7 @@ export async function fetchPokemonDetail(nameOrId) {
 }
 
 /**
- * Retorna a URL da imagem oficial do pokémon
+ * Retorna a URL da imagem oficial do pokemon
  * @param {number} id
  * @returns {string}
  */
@@ -35,7 +35,7 @@ export function getPokemonImageUrl(id) {
 }
 
 /**
- * Extrai o ID numérico de uma URL da PokeAPI
+ * Extrai o ID numerico de uma URL da PokeAPI
  * @param {string} url
  * @returns {number}
  */
@@ -45,7 +45,7 @@ export function extractIdFromUrl(url) {
 }
 
 /**
- * Busca a lista de pokémons já com detalhes enriquecidos (id + imagem)
+ * Busca a lista de pokemons ja com detalhes enriquecidos (id + imagem)
  * @param {number} limit
  * @param {number} offset
  * @returns {Promise<Array>}

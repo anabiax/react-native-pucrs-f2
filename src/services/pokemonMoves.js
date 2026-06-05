@@ -1,7 +1,7 @@
 import { fetchPokemonDetail } from './pokeApi';
 
 /**
- * Emojis/ícones por tipo de movimento
+ * Emojis/icones por tipo de movimento
  */
 export const MOVE_TYPE_EMOJI = {
   fire: '🔥',
@@ -33,7 +33,7 @@ export const MOVE_TYPE_EMOJI = {
 export async function fetchPokemonMoves(nameOrId) {
   const pokemon = await fetchPokemonDetail(nameOrId);
 
-  // Limita a 20 movimentos para não sobrecarregar
+  // Limita a 20 movimentos 
   const moveSlice = pokemon.moves.slice(0, 20);
 
   const moves = await Promise.all(
