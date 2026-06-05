@@ -8,15 +8,16 @@ import {
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 
 import PokedexHeader from '../../components/PokedexHeader';
 import SearchBar from '../../components/SearchBar';
 import PokemonGrid from '../../components/PokemonGrid';
 import { usePokemonList } from '../../hooks/usePokemonList';
-import { capitalizeName } from '../../utils/pokemonUtils';
 
-export default function PokedexScreen({ navigation }) {
+export default function PokedexScreen() {
   const [searchText, setSearchText] = useState('');
+  const router = useRouter();
   const { pokemons, loading, loadingMore, error, hasNext, loadMore, refresh } =
     usePokemonList();
 
@@ -31,16 +32,13 @@ export default function PokedexScreen({ navigation }) {
   }, [pokemons, searchText]);
 
   const handlePokemonPress = (pokemon) => {
-    // Navegar para tela de detalhe (se existir)
-    // navigation?.navigate('PokemonDetail', { pokemon });
-    console.log('Pokemon selecionado:', pokemon.name);
+    router.push(`/moves/${pokemon.name}`);
   };
 
   return (
     <SafeAreaView style={styles.safe}>
       <PokedexHeader />
       <View style={styles.body}>
-        {/* Barra de busca */}
         <View style={styles.searchWrapper}>
           <SearchBar
             value={searchText}
@@ -49,7 +47,6 @@ export default function PokedexScreen({ navigation }) {
           />
         </View>
 
-        {/* Conteúdo principal */}
         {loading ? (
           <View style={styles.centered}>
             <ActivityIndicator size="large" color="#E3000F" />
@@ -71,7 +68,6 @@ export default function PokedexScreen({ navigation }) {
               onPokemonPress={handlePokemonPress}
             />
 
-            {/* Botão "Ver mais Pokémons" */}
             {hasNext && !searchText && (
               <TouchableOpacity
                 style={styles.loadMoreBtn}
@@ -93,59 +89,14 @@ export default function PokedexScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: '#E3000F',
-  },
-  body: {
-    flex: 1,
-    backgroundColor: '#F5F5F5',
-  },
-  searchWrapper: {
-    backgroundColor: '#2a2a2a',
-    paddingTop: 12,
-    paddingBottom: 12,
-  },
-  scrollContent: {
-    paddingTop: 16,
-    paddingBottom: 32,
-  },
-  centered: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
-  },
-  errorText: {
-    color: '#E3000F',
-    fontSize: 15,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  retryBtn: {
-    backgroundColor: '#E3000F',
-    borderRadius: 12,
-    paddingHorizontal: 24,
-    paddingVertical: 10,
-  },
-  retryText: {
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 14,
-  },
-  loadMoreBtn: {
-    backgroundColor: '#E3000F',
-    marginHorizontal: 16,
-    borderRadius: 14,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 8,
-  },
-  loadMoreText: {
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 15,
-    letterSpacing: 0.3,
-  },
+  safe: { flex: 1, backgroundColor: '#E3000F' },
+  body: { flex: 1, backgroundColor: '#F5F5F5' },
+  searchWrapper: { backgroundColor: '#2a2a2a', paddingTop: 12, paddingBottom: 12 },
+  scrollContent: { paddingTop: 16, paddingBottom: 32 },
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
+  errorText: { color: '#E3000F', fontSize: 15, textAlign: 'center', marginBottom: 16 },
+  retryBtn: { backgroundColor: '#E3000F', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 10 },
+  retryText: { color: '#fff', fontWeight: '700', fontSize: 14 },
+  loadMoreBtn: { backgroundColor: '#E3000F', marginHorizontal: 16, borderRadius: 14, height: 50, alignItems: 'center', justifyContent: 'center', marginTop: 8 },
+  loadMoreText: { color: '#fff', fontWeight: '700', fontSize: 15, letterSpacing: 0.3 },
 });
