@@ -1,82 +1,53 @@
-import { fetchPokemonDetail } from './pokeApi';
+const BASE_URL = 'https://pokeapi.co/api/v2';
 
-/**
- * Emojis/icones por tipo de movimento
- */
-export const MOVE_TYPE_EMOJI = {
-  fire: '🔥',
-  water: '💧',
-  grass: '🌿',
-  electric: '⚡',
-  ice: '❄️',
-  fighting: '🥊',
-  poison: '☠️',
-  ground: '🪨',
-  flying: '🌬️',
-  psychic: '🔮',
-  bug: '🐛',
-  rock: '🪨',
-  ghost: '👻',
-  dragon: '🐉',
-  dark: '🌑',
-  steel: '⚙️',
-  fairy: '✨',
-  normal: '⭐',
-};
-
-/**
- * Busca os movimentos de um pokémon pelo nome/id
- * Retorna lista enriquecida com detalhes de cada move
- * @param {string|number} nameOrId
- * @returns {Promise<{ pokemon: Object, moves: Array }>}
- */
 export async function fetchPokemonMoves(nameOrId) {
-  const pokemon = await fetchPokemonDetail(nameOrId);
+  const response = await fetch(`${BASE_URL}/pokemon/${nameOrId}`);
 
-  // Limita a 20 movimentos 
-  const moveSlice = pokemon.moves.slice(0, 20);
+  if (!response.ok) {
+    throw new Error(`Pokémon "${nameOrId}" não encontrado`);
+  }
 
-  const moves = await Promise.all(
-    moveSlice.map(async ({ move }) => {
-      try {
-        const res = await fetch(move.url);
-        const data = await res.json();
-        return {
-          id: data.id,
-          name: data.name,
-          type: data.type?.name || 'normal',
-          power: data.power,
-          accuracy: data.accuracy,
-          pp: data.pp,
-          damageClass: data.damage_class?.name || 'status',
-          // nome em pt-BR se disponível, senão em inglês
-          displayName:
-            data.names?.find((n) => n.language.name === 'pt-BR')?.name ||
-            data.names?.find((n) => n.language.name === 'en')?.name ||
-            data.name,
-        };
-      } catch {
-        return {
-          id: Math.random(),
-          name: move.name,
-          type: 'normal',
-          power: null,
-          accuracy: null,
-          pp: null,
-          damageClass: 'status',
-          displayName: move.name,
-        };
-      }
-    })
-  );
+  const json = await response.json();
 
-  return {
-    pokemon: {
-      id: pokemon.id,
-      name: pokemon.name,
-      image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`,
-      totalMoves: pokemon.moves.length,
-    },
-    moves,
+  const pokemon = {
+    id: json.id,
+    name: json.name,
+    image:
+      json.sprites?.other?.['official-artwork']?.front_default ??
+      json.sprites?.front_default ??
+      null,
+    totalMoves: json.moves.length,
+    types: json.types.map((t) => t.type.name),
   };
+
+  // Extrai o método de aprendizado e nível mais relevante por move
+  const moves = json.moves.map((entry) => {
+    const detail =
+      entry.version_group_details.find(d => d.move_learn_method.name === 'level-up') ??
+      entry.version_group_details.at(-1);
+
+    const method = detail?.move_learn_method?.name ?? 'unknown';
+    const level = detail?.level_learned_at ?? 0;
+
+    // extrair id da URL
+    const urlParts = entry.move.url.split('/').filter(Boolean);
+    const id = Number(urlParts.at(-1));
+
+    return {
+      id,
+      name: entry.move.name,
+      learnMethod: method,   // "level-up" | "machine" | "egg" | "tutor"
+      level,                 // 0 quando não é level-up
+    };
+  });
+
+  // Ordena: level-up primeiro (por nível), depois os demais (alfabético)
+  moves.sort((a, b) => {
+    if (a.learnMethod === 'level-up' && b.learnMethod !== 'level-up') return -1;
+    if (a.learnMethod !== 'level-up' && b.learnMethod === 'level-up') return 1;
+    if (a.learnMethod === 'level-up') return a.level - b.level;
+    return a.name.localeCompare(b.name);
+  });
+
+  return { pokemon, moves };
 }

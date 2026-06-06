@@ -1,46 +1,54 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-  SafeAreaView,
-  StatusBar,
+  View, Text, ScrollView,
+  TouchableOpacity, ActivityIndicator, SafeAreaView, StatusBar,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useMoveDetail } from '../../hooks/useMoveDetail';
-import { capitalizeName, getCardBackground } from '../../utils/pokemonUtils';
-import { MOVE_TYPE_EMOJI } from '../../services/pokemonMoves';
-import {
-  TARGET_LABELS,
-  DAMAGE_CLASS_LABELS,
-  DAMAGE_CLASS_COLORS,
-} from '../../services/moveDetail';
+import { capitalizeName } from '../../utils/pokemonUtils';
 import { styles } from './MoveDetailScreen.styles';
 
-const PAGE_SIZE = 5;
+const TYPE_COLORS = {
+  fire: '#F08030',     water: '#6890F0',    grass: '#78C850',
+  electric: '#F8D030', ice: '#98D8D8',      fighting: '#C03028',
+  poison: '#A040A0',   ground: '#E0C068',   flying: '#A890F0',
+  psychic: '#F85888',  bug: '#A8B820',      rock: '#B8A038',
+  ghost: '#705898',    dragon: '#7038F8',   dark: '#705848',
+  steel: '#B8B8D0',    fairy: '#EE99AC',    normal: '#A8A878',
+};
+
+const CLASS_LABEL = {
+  physical: '⚔️ Físico',
+  special:  '✨ Especial',
+  status:   '🔄 Status',
+};
+
+function StatRow({ label, value }) {
+  if (value == null) return null;
+  return (
+    <View style={styles.statRow}>
+      <Text style={styles.statLabel}>{label}</Text>
+      <Text style={styles.statValue}>{value}</Text>
+    </View>
+  );
+}
 
 export default function MoveDetailScreen() {
   const { move } = useLocalSearchParams();
   const router = useRouter();
   const { data, loading, error } = useMoveDetail(move);
-  const [showAll, setShowAll] = useState(false);
 
-  const bgColor = data ? getCardBackground(data.id) : '#F5D5B8';
-  const emoji = data ? (MOVE_TYPE_EMOJI[data.type] || '⭐') : '⭐';
-  const visibleLearners = showAll ? data?.learnedBy : data?.learnedBy?.slice(0, PAGE_SIZE);
+  const typeColor = data ? (TYPE_COLORS[data.type] ?? '#888') : '#888';
 
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="light-content" backgroundColor="#E3000F" />
 
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
           <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>DETALHE</Text>
+        <Text style={styles.headerTitle}>DETALHES DO MOVIMENTO</Text>
         <View style={styles.backBtn} />
       </View>
 
@@ -53,106 +61,47 @@ export default function MoveDetailScreen() {
           <Text style={styles.errorText}>{error}</Text>
         </View>
       ) : (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-        >
-          {/* Hero card */}
-          <View style={[styles.heroCard, { backgroundColor: bgColor }]}>
-            <Text style={styles.heroEmoji}>{emoji}</Text>
-            <Text style={styles.heroName}>{capitalizeName(data.displayName)}</Text>
-          </View>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
 
-          {/* Stats row */}
-          <View style={styles.statsRow}>
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{data.power ?? '—'}</Text>
-              <Text style={styles.statLabel}>PODER</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>
-                {data.accuracy != null ? `${data.accuracy}%` : '—'}
-              </Text>
-              <Text style={styles.statLabel}>PRECISÃO</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{data.pp ?? '—'}</Text>
-              <Text style={styles.statLabel}>PP</Text>
-            </View>
-          </View>
-
-          {/* Info tabela */}
-          <View style={styles.section}>
-            <InfoRow
-              label="Tipo"
-              value={`${MOVE_TYPE_EMOJI[data.type] || '⭐'} ${capitalizeName(data.type)}`}
-              valueColor="#E3000F"
-            />
-            <InfoRow
-              label="Categoria"
-              value={`${data.damageClass === 'special' ? '✦' : data.damageClass === 'physical' ? '⚔️' : '○'} ${DAMAGE_CLASS_LABELS[data.damageClass] || data.damageClass}`}
-              valueColor={DAMAGE_CLASS_COLORS[data.damageClass]}
-            />
-            {data.secondaryEffect && (
-              <InfoRow
-                label="Efeito secundário"
-                value={`${emoji} ${data.secondaryEffect}`}
-                valueColor="#E3000F"
-              />
-            )}
-            {data.effectChance && (
-              <InfoRow label="Chance do efeito" value={`${data.effectChance}%`} />
-            )}
-            <InfoRow
-              label="Alvo"
-              value={TARGET_LABELS[data.target] || capitalizeName(data.target)}
-            />
-            <InfoRow label="Geração" value={data.generation} />
-          </View>
-
-          {/* Descricao */}
-          {data.description ? (
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>DESCRIÇÃO</Text>
-              <Text style={styles.description}>{data.description}</Text>
-            </View>
-          ) : null}
-
-          {/* Aprendido por */}
-          <View style={styles.section}>
-            <View style={styles.learnedHeader}>
-              <Text style={styles.sectionTitle}>POKÉMONS QUE APRENDEM</Text>
-              <Text style={styles.learnedCount}>{data.totalLearners} pokémons</Text>
-            </View>
-
-            {visibleLearners?.map((p) => (
-              <View key={p.id} style={styles.learnerRow}>
-                <Text style={styles.learnerName}>{capitalizeName(p.name)}</Text>
-                <Text style={styles.learnerLevel}>{p.id}</Text>
+          <View style={[styles.heroCard, { borderLeftColor: typeColor }]}>
+            <Text style={styles.moveName}>{capitalizeName(data.name)}</Text>
+            <View style={styles.badgeRow}>
+              <View style={[styles.typeBadge, { backgroundColor: typeColor }]}>
+                <Text style={styles.badgeText}>{data.type.toUpperCase()}</Text>
               </View>
-            ))}
+              <View style={styles.classBadge}>
+                <Text style={styles.classBadgeText}>
+                  {CLASS_LABEL[data.damageClass] ?? data.damageClass}
+                </Text>
+              </View>
+            </View>
+          </View>
 
-            {!showAll && data.learnedBy.length > PAGE_SIZE && (
-              <TouchableOpacity style={styles.loadMoreBtn} onPress={() => setShowAll(true)}>
-                <Text style={styles.loadMoreText}>Ver mais pokémons</Text>
-              </TouchableOpacity>
+          <View style={styles.statsCard}>
+            <StatRow label="Poder"    value={data.power    ?? '—'} />
+            <StatRow label="PP"       value={data.pp       ?? '—'} />
+            <StatRow label="Precisão" value={data.accuracy != null ? `${data.accuracy}%` : '—'} />
+            {data.effectChance != null && (
+              <StatRow label="Chance de efeito" value={`${data.effectChance}%`} />
             )}
           </View>
+
+          {data.shortEffect && (
+            <View style={styles.descCard}>
+              <Text style={styles.descTitle}>Efeito</Text>
+              <Text style={styles.descText}>{data.shortEffect}</Text>
+            </View>
+          )}
+
+          {data.flavorText && (
+            <View style={styles.descCard}>
+              <Text style={styles.descTitle}>Descrição</Text>
+              <Text style={styles.descText}>{data.flavorText}</Text>
+            </View>
+          )}
+
         </ScrollView>
       )}
     </SafeAreaView>
-  );
-}
-
-function InfoRow({ label, value, valueColor }) {
-  return (
-    <View style={styles.infoRow}>
-      <Text style={styles.infoLabel}>{label}</Text>
-      <Text style={[styles.infoValue, valueColor ? { color: valueColor } : null]}>
-        {value}
-      </Text>
-    </View>
   );
 }

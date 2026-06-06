@@ -1,28 +1,43 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { MOVE_TYPE_EMOJI } from '../services/pokemonMoves';
 import { capitalizeName } from '../utils/pokemonUtils';
 import { styles } from './MoveItem.styles';
 
+const METHOD_LABEL = {
+  'level-up': '⬆ Nível',
+  machine:    '💿 MT/MO',
+  egg:        '🥚 Ovo',
+  tutor:      '📖 Tutor',
+};
+
+const METHOD_COLOR = {
+  'level-up': '#4CAF50',
+  machine:    '#2196F3',
+  egg:        '#FF9800',
+  tutor:      '#9C27B0',
+};
+
 export default function MoveItem({ move }) {
   const router = useRouter();
-  const emoji = MOVE_TYPE_EMOJI[move.type] || '⭐';
+  const label  = METHOD_LABEL[move.learnMethod] ?? move.learnMethod;
+  const color  = METHOD_COLOR[move.learnMethod] ?? '#888';
 
   return (
     <TouchableOpacity
-      style={styles.row}
+      style={styles.container}
       onPress={() => router.push(`/moves/detail/${move.name}`)}
-      activeOpacity={0.75}
+      activeOpacity={0.7}
     >
-      <View style={styles.iconWrapper}>
-        <Text style={styles.emoji}>{emoji}</Text>
+      <View style={styles.nameRow}>
+        <Text style={styles.name}>{capitalizeName(move.name)}</Text>
+        {move.learnMethod === 'level-up' && move.level > 0 && (
+          <Text style={styles.level}>Nv. {move.level}</Text>
+        )}
       </View>
-      <Text style={styles.name}>{capitalizeName(move.displayName)}</Text>
-      {move.power ? (
-        <Text style={styles.power}>{move.power} pw</Text>
-      ) : null}
-      <Text style={styles.chevron}>›</Text>
+      <View style={[styles.badge, { backgroundColor: color }]}>
+        <Text style={styles.badgeText}>{label}</Text>
+      </View>
     </TouchableOpacity>
   );
 }
