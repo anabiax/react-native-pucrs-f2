@@ -5,13 +5,15 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#E3000F',
   },
+
+  // Header
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#E3000F',
     paddingHorizontal: 16,
     paddingVertical: 14,
+    backgroundColor: '#E3000F',
   },
   backBtn: {
     width: 36,
@@ -25,10 +27,18 @@ export const styles = StyleSheet.create({
   },
   headerTitle: {
     color: '#FFD700',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '800',
-    letterSpacing: 1.5,
+    letterSpacing: 2,
   },
+
+  // Scroll
+  scrollContent: {
+    backgroundColor: '#F5F5F5',
+    paddingBottom: 40,
+  },
+
+  // States
   centered: {
     flex: 1,
     backgroundColor: '#F5F5F5',
@@ -41,103 +51,170 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 24,
   },
-  scrollContent: {
-    backgroundColor: '#F5F5F5',
-    padding: 16,
-    gap: 12,
-    paddingBottom: 32,
-  },
+
+  // Hero
   heroCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    borderLeftWidth: 6,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.07,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 32,
+    paddingBottom: 28,
+    backgroundColor: '#F5D5B8',
   },
-  moveName: {
-    fontSize: 24,
+  heroEmoji: {
+    fontSize: 80,
+    marginBottom: 12,
+  },
+  heroName: {
+    fontSize: 26,
     fontWeight: '800',
     color: '#222',
-    marginBottom: 10,
   },
-  badgeRow: {
+
+  // Stats
+  statsRow: {
     flexDirection: 'row',
-    gap: 8,
-  },
-  typeBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 8,
-  },
-  badgeText: {
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 12,
-  },
-  classBadge: {
-    backgroundColor: '#eee',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 8,
-  },
-  classBadgeText: {
-    color: '#555',
-    fontWeight: '600',
-    fontSize: 12,
-  },
-  statsCard: {
     backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.07,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
+    paddingVertical: 18,
+    marginBottom: 12,
   },
-  statRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  statLabel: {
-    fontSize: 14,
-    color: '#888',
-    fontWeight: '500',
+  statBox: {
+    flex: 1,
+    alignItems: 'center',
   },
   statValue: {
-    fontSize: 14,
+    fontSize: 22,
+    fontWeight: '800',
     color: '#222',
-    fontWeight: '700',
   },
+  statSubLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: '#aaa',
+    letterSpacing: 1,
+    marginTop: 3,
+    textTransform: 'uppercase',
+  },
+  statDivider: {
+    width: 1,
+    backgroundColor: '#eee',
+    marginVertical: 4,
+  },
+
+  // Info table
+  infoCard: {
+    backgroundColor: '#fff',
+    marginHorizontal: 16,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    marginBottom: 12,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 13,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#ECECEC',
+  },
+  infoRowLast: {
+    borderBottomWidth: 0,
+  },
+  infoLabel: {
+    fontSize: 13,
+    color: '#aaa',
+    fontWeight: '400',
+  },
+  infoValue: {
+    fontSize: 13,
+    color: '#222',
+    fontWeight: '600',
+    textAlign: 'right',
+    flexShrink: 1,
+    marginLeft: 12,
+  },
+
+  // Descricao
   descCard: {
     backgroundColor: '#fff',
+    marginHorizontal: 16,
     borderRadius: 12,
     padding: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.07,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
+    marginBottom: 12,
   },
   descTitle: {
-    fontSize: 13,
+    fontSize: 11,
     fontWeight: '700',
-    color: '#888',
-    marginBottom: 6,
+    color: '#aaa',
+    letterSpacing: 1.5,
+    marginBottom: 8,
     textTransform: 'uppercase',
-    letterSpacing: 1,
   },
   descText: {
-    fontSize: 15,
-    color: '#333',
+    fontSize: 14,
+    color: '#444',
     lineHeight: 22,
+  },
+
+  // Aprendido por
+  learnedCard: {
+    backgroundColor: '#fff',
+    marginHorizontal: 16,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 0,
+    marginBottom: 12,
+  },
+  learnedHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  learnedTitle: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#aaa',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+  },
+  learnedCount: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#E3000F',
+  },
+  pokemonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 14,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: '#ECECEC',
+  },
+  pokemonName: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#222',
+  },
+  pokemonId: {
+    fontSize: 14,
+    color: '#aaa',
+    fontWeight: '500',
+  },
+
+  // Carregar +
+  loadMoreBtn: {
+    backgroundColor: '#E3000F',
+    marginTop: 8,
+    marginBottom: 16,
+    marginHorizontal: 0,
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  loadMoreText: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 14,
   },
 });

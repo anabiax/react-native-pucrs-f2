@@ -25,32 +25,40 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
 
-When you're ready, run:
+## Estrutura das Telas
+#### 1. Tela de Listagem de Pokémons
+Esta é a tela inicial do aplicativo, responsável por apresentar o catálogo de personagens ao usuário.
 
-```bash
-npm run reset-project
-```
+Descrição: Exibe os Pokemons em formato de cards, contendo nome, número de identificação e uma imagem ilustrativa. A interface inclui uma barra de busca superior para filtragem e um botão inferior para carregar mais registros.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Propósito: Permitir a exploração do catálogo e servir como ponto de seleção para navegar aos detalhes de um Pokémon específico.
 
-### Other setup steps
+Rota da API: [https://pokeapi.co/api/v2/pokemon?limit=20&offset=0](https://pokeapi.co/api/v2/pokemon?limit=20&offset=0)
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+#### 2. Tela de Movimentos do Pokémon
+Esta tela é acessada ao tocar em um card de Pokémon na tela de listagem.
 
-## Learn more
+Descrição: Apresenta os dados do Pokémon selecionado (nome, número e imagem) acompanhados por uma lista completa de todos os movimentos que ele pode aprender.
 
-To learn more about developing your project with Expo, look at the following resources:
+Propósito: Fornecer uma visão detalhada das habilidades do Pokémon escolhido, funcionando como um intermediário para a seleção de um golpe específico.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Rota da API: [https://pokeapi.co/api/v2/pokemon/](https://pokeapi.co/api/v2/pokemon/){nome_ou_id}
 
-## Join the community
 
-Join our community of developers creating universal apps.
+#### 3. Tela de Detalhe do Movimento
+Esta tela é acessada ao selecionar um movimento específico na lista de um Pokémon.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Descrição: Exibe as especificações técnicas completas de um golpe, incluindo:
+
+Atributos de combate: Poder, precisão e PP.
+
+Ficha técnica: Tipo, categoria, chance de efeito secundário, alvo e geração.
+
+Descrição: Explicação textual sobre o efeito do movimento no combate.
+
+Lista de aprendizado: Relação de outros Pokémons que também aprendem este movimento.
+
+Propósito: Consolidar as informações técnicas de um movimento, permitindo que o usuário compreenda o impacto da habilidade no jogo.
+
+Rota da API: [https://pokeapi.co/api/v2/move/](https://pokeapi.co/api/v2/move/){nome_ou_id}

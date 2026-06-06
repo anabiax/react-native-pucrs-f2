@@ -17,7 +17,7 @@ export default function PokemonGrid({ pokemons, onPokemonPress }) {
       columnWrapperStyle={styles.row}
       contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}
-      scrollEnabled={false} // Scroll controlado pelo pai (ScrollView)
+      scrollEnabled={false}
     />
   );
 }

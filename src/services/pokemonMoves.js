@@ -20,7 +20,7 @@ export async function fetchPokemonMoves(nameOrId) {
     types: json.types.map((t) => t.type.name),
   };
 
-  // Extrai o método de aprendizado e nível mais relevante por move
+  // extrai o método de aprendizado e nível mais relevante por move
   const moves = json.moves.map((entry) => {
     const detail =
       entry.version_group_details.find(d => d.move_learn_method.name === 'level-up') ??
@@ -41,7 +41,7 @@ export async function fetchPokemonMoves(nameOrId) {
     };
   });
 
-  // Ordena: level-up primeiro (por nível), depois os demais (alfabético)
+  // ordena: level-up primeiro (por nivel), depois os demais (alfabetico)
   moves.sort((a, b) => {
     if (a.learnMethod === 'level-up' && b.learnMethod !== 'level-up') return -1;
     if (a.learnMethod !== 'level-up' && b.learnMethod === 'level-up') return 1;

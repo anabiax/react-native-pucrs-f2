@@ -1,7 +1,7 @@
 const BASE_URL = 'https://pokeapi.co/api/v2';
 
 /**
- * Busca a lista de pokemons com paginação
+ * Busca a lista de pokemons com paginacao
  * @param {number} limit - Quantidade de pokemons por pagina
  * @param {number} offset - Deslocamento para paginacao
  * @returns {Promise<{results: Array, count: number, next: string|null, previous: string|null}>}
