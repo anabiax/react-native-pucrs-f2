@@ -24,11 +24,7 @@ export default function MoveItem({ move }) {
   const color  = METHOD_COLOR[move.learnMethod] ?? '#888';
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => router.push(`/moves/detail/${move.name}`)}
-      activeOpacity={0.7}
-    >
+    <View style={styles.container}>
       <View style={styles.nameRow}>
         <Text style={styles.name}>{capitalizeName(move.name)}</Text>
         {move.learnMethod === 'level-up' && move.level > 0 && (
@@ -38,6 +34,6 @@ export default function MoveItem({ move }) {
       <View style={[styles.badge, { backgroundColor: color }]}>
         <Text style={styles.badgeText}>{label}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
